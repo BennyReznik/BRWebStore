@@ -1,1 +1,3 @@
-console.log("My Store");
+import { app } from "./app";
+
+app.listen(3000);

@@ -1,4 +1,5 @@
 {
+  "compileOnSave": true,
   "include": ["src/**/*"],
   "exclude": ["node_modules"],
   "compilerOptions": {
@@ -10,7 +11,7 @@
     "paths": {
       "*": ["node_modules/*", "src/types/*"]
     },
-    "esModuleInterop": true,
+    "esModuleInterop": false,
 
     "resolveJsonModule": true,
     "sourceMap": true,
