@@ -4,7 +4,9 @@ import {
   createProduct,
   updateProduct,
   deleteProduct,
-  isProductNameLengthValid
+  isProductNameLengthValid,
+  checkIfIdIsNumber,
+  productNotFound
 } from "./productsRoute";
 
 export {
@@ -13,5 +15,7 @@ export {
   createProduct,
   updateProduct,
   deleteProduct,
-  isProductNameLengthValid
+  isProductNameLengthValid,
+  checkIfIdIsNumber,
+  productNotFound
 };

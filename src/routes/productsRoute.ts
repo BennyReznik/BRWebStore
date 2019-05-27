@@ -10,10 +10,7 @@ const getProducts = (req: Request, res: Response, next: NextFunction) => {
 
 const getProductsById = (req: Request, res: Response, next: NextFunction) => {
   const id = req.params.id;
-  checkIfIdIsNumber(id, res);
   const existing = products.find(p => p.id === id);
-
-  productNotFound(res, existing);
 
   res.send(existing);
 };
@@ -29,10 +26,7 @@ const createProduct = (req: Request, res: Response) => {
 
 const updateProduct = (req: Request, res: Response) => {
   const id: string = req.params.id;
-  checkIfIdIsNumber(id, res);
   const product = products.find(p => p.id === id.toString());
-
-  productNotFound(res, product);
 
   const productToUpdate = req.body as IProduct;
   productToUpdate.id = id;
@@ -42,33 +36,32 @@ const updateProduct = (req: Request, res: Response) => {
 };
 
 const deleteProduct = (req: Request, res: Response) => {
-  const id = req.params.id;
-  checkIfIdIsNumber(id, res);
-  const index = products.findIndex(p => p.id === id.toString());
+  const index = products.findIndex(p => p.id === req.params.id);
 
-  if (!index) {
+  if (index !== 0 && !index) {
     res.sendStatus(404);
+  } else {
+    products.splice(index, 1);
+    res.sendStatus(204);
   }
-
-  products.splice(index, 1);
-  res.sendStatus(204);
 };
 
-function productNotFound(res: Response, existing: IProduct | undefined) {
-  if (!existing) {
-    // TODO: sending 404 if existing is not found repeats in other routes, can reuse via multiple route handlers
-    res.sendStatus(404);
-    return;
+const productNotFound = (req: Request, res: Response, next: NextFunction) => {
+  const product = products.find(p => p.id === req.params.id);
+  if (product) {
+    next();
+  } else {
+    res.status(404).send("product not found");
   }
-}
+};
 
-function checkIfIdIsNumber(id: any, res: Response) {
-  if (isNaN(id)) {
-    return true;
+const checkIfIdIsNumber = (req: Request, res: Response, next: NextFunction) => {
+  if (isNaN(req.params.id)) {
+    res.status(400).send("id is not a number");
+  } else {
+    next();
   }
-  res.sendStatus(400);
-  return false;
-}
+};
 
 const isProductNameLengthValid = (
   req: Request,
@@ -83,11 +76,26 @@ const isProductNameLengthValid = (
   }
 };
 
+function getMaxId() {
+  let maxId = 1;
+
+  products.forEach(e => {
+    let id = Number.parseInt(e.id, undefined);
+    if (id > maxId) {
+      maxId = id;
+    }
+  });
+
+  return maxId;
+}
+
 export {
   getProducts,
   getProductsById,
   createProduct,
   updateProduct,
   deleteProduct,
-  isProductNameLengthValid
+  isProductNameLengthValid,
+  checkIfIdIsNumber,
+  productNotFound
 };

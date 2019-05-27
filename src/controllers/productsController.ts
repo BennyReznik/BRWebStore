@@ -5,19 +5,37 @@ import {
   createProduct,
   updateProduct,
   deleteProduct,
-  isProductNameLengthValid
+  isProductNameLengthValid,
+  checkIfIdIsNumber,
+  productNotFound
 } from "../routes";
 
 function setup(app: Application) {
   app.get("/api/products", getProducts);
 
-  app.get("/api/products/:id", getProductsById);
+  app.get(
+    "/api/products/:id",
+    productNotFound,
+    checkIfIdIsNumber,
+    getProductsById
+  );
 
   app.post("/api/products", isProductNameLengthValid, createProduct);
 
-  app.put("/api/products/:id", updateProduct);
+  app.put(
+    "/api/products/:id",
+    checkIfIdIsNumber,
+    productNotFound,
+    isProductNameLengthValid,
+    updateProduct
+  );
 
-  app.delete("/api/products/:id", deleteProduct);
+  app.delete(
+    "/api/products/:id",
+    checkIfIdIsNumber,
+    productNotFound,
+    deleteProduct
+  );
 }
 
 export default setup;
