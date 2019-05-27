@@ -1,3 +1,17 @@
-import { getProducts, getProductsById } from "./productsRoute";
+import {
+  getProducts,
+  getProductsById,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+  isProductNameLengthValid
+} from "./productsRoute";
 
-export { getProducts, getProductsById };
+export {
+  getProducts,
+  getProductsById,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+  isProductNameLengthValid
+};

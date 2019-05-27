@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:run": "./node_modules/.bin/tsc",
+    "build:run": "./node_modules/.bin/tsc && npm run watch",
     "build:clean": "rm -rf ./dist",
     "build": "npm run build:clean && npm run build:run",
     "serve": "node dist/index.js",
