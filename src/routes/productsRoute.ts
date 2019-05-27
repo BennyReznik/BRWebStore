@@ -18,7 +18,7 @@ const getProductsById = (req: Request, res: Response, next: NextFunction) => {
 const createProduct = (req: Request, res: Response) => {
   const newProduct = req.body as IProduct;
 
-  newProduct.id = (Number(products[products.length - 1].id) + 1).toString();
+  newProduct.id = (getMaxId() + 1).toString();
 
   products.push(newProduct);
   res.status(201).send(newProduct);
@@ -32,7 +32,7 @@ const updateProduct = (req: Request, res: Response) => {
   productToUpdate.id = id;
   Object.assign(product, productToUpdate);
 
-  res.status(400).send(product);
+  res.status(200).send(product);
 };
 
 const deleteProduct = (req: Request, res: Response) => {
